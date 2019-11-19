@@ -1,0 +1,63 @@
+Starting a typescript program:
+
+-create a todo folder
+-cd into todo
+
+-create a tsconfig.json file with the following:
+{
+    "compilerOptions": 
+    {
+    "target": "es2018",
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "module": "commonjs"
+    }
+}
+
+-create a dist and src folder
+
+-create ts files in src
+
+-when ready to compile navigate to the todo folder
+>and enter tsc
+
+the compiled javascript will be located in the dist folder
+
+--------------------------------------------------------------
+
+Do not make changes to the js files in dist as they will be 
+overwritten by compiled ts code.
+
+--
+
+The first program will be a todo list.
+
+--
+
+Classes are templates that describe a data type.
+
+--
+
+Javascript supports classes with constructors, properties, and methods,
+but features such as access control keywords like public are supplied by
+TypeScript.
+
+--
+
+The headline TypeScript feature is static typing, which allows the type of each 
+property and parameter in the TodoItem class to be specified.
+
+public id: number;
+
+--
+
+public id: number;
+Is an example of a type annotation.
+This tells the TypeScript compiler that id is of type number.
+
+--
+
+
+
+
+
