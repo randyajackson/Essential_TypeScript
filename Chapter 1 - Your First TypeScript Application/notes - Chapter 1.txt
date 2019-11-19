@@ -57,6 +57,37 @@ This tells the TypeScript compiler that id is of type number.
 
 --
 
+TypeScript assumes all methods and properties are public
+unless otherwise indicated.
+
+--
+
+todoCollections is a class used to colllect together the todo items so 
+they can be managed more easily.
+
+--
+
+Testing will take place in th index.ts file.
+
+--
+
+Everything in index.ts is using pure javascript features.
+
+Even without infering the static type information
+(like public or pivate)
+it is still able to compile into JS code.
+
+--
+
+Using print of a variable like ${collection.userName}
+the left tick apostraphe (The ~ key) must be used.
+
+--
+
+let <var name> : <type> =
+way to type vatiables in typescript
+
+--
 
 
 
