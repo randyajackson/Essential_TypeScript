@@ -1,5 +1,6 @@
 import {TodoItem} from "./todoItem";
 import {TodoCollection} from "./todoCollection";
+import * as inquirer from 'inquirer';
 
     //let todos = [
     let todos: TodoItem[] = [

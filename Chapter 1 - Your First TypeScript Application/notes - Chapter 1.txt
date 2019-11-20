@@ -89,6 +89,73 @@ way to type vatiables in typescript
 
 --
 
+TypeScript supports generic types.
+Generic types are placeholders for types that are resolved
+when an object is created.
+
+Ex:
+Map is a general purpose collection that stores key/value pairs
+
+In Javascript, a map can be used to store any mix of data types
+using any mixture of keys.
+
+To restrict the types that can be used with the map "itemMap"
+in todoCollections, generic type arguments are used to tell the
+TypeScript compiler which variable types are allowed.
+
+private itemMap = new Map<number, TodoItem>();
+
+"The map will store TodoItems using numbers as keys."
+
+--
+
+The TodoCollection class defines a getTodoById method that returns
+a TodoItem based on which number is given.
+
+getTodoItems provides access to all of the TodoItems objects that
+TodoCollection is managing.
+
+getTodoItems method gets objects from the Map using its values
+method and uses them to create an array using the javascript
+spread (...) operator.
+
+includeComplete selects which parameters are included.
+
+--
+
+removeComplete uses Map.forEach to check each TodoItem stored
+in the map and remove those where complete = false.
+
+--
+
+Combination of property names and the types of their values
+is referred to as "shape".
+
+A specific combination of names and types is known as 
+a shape type.
+
+--
+
+The type keyword is used to create a type alias.
+(Way to assign a name to a shape type)
+
+--
+
+Using Third - Party Packages
+---------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
