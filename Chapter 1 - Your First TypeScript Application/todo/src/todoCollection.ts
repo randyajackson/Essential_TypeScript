@@ -1,5 +1,13 @@
 import {TodoItem} from "./todoItem";
 
+
+//introducing a shape type
+
+type ItemCounts = {
+    total: number,
+    incomplete: number
+}
+
 export class TodoCollection {
     private nextId: number = 1;
 
@@ -55,6 +63,15 @@ export class TodoCollection {
                 this.itemMap.delete(item.id);
             }
         })
+    }
+
+    //this draws on the shape type declared at the top
+
+    getItemCounts(): ItemCounts {
+        return {
+            total: this.itemMap.size,
+            incomplete: this.getTodoItems(false).length
+        };
     }
 
 

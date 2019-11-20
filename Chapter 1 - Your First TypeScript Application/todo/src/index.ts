@@ -10,7 +10,8 @@ import {TodoCollection} from "./todoCollection";
     let collection: TodoCollection = new TodoCollection("Adam", todos);
 
     console.clear();
-    console.log(`${collection.userName}'s Todo List`);
+    console.log(`${collection.userName}'s Todo List` +
+                ` (${ collection.getItemCounts().incomplete } items to do)`);
 
     //*********************************************/
     // let newId = collection.addTodo("Go for run");
@@ -28,7 +29,7 @@ import {TodoCollection} from "./todoCollection";
     //above is used to enter one entry into TodoCollection
     //**********************************************/
     collection.removeComplete();
-    
+
     collection.getTodoItems(true).forEach(item => item.printDetails());
     //getTodoItems is passed true which is assigned to includeComplete
 

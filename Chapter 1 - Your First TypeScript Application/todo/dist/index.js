@@ -10,7 +10,8 @@ let todos = [
 // let collection = new TodoCollection("Adam", todos);
 let collection = new todoCollection_1.TodoCollection("Adam", todos);
 console.clear();
-console.log(`${collection.userName}'s Todo List`);
+console.log(`${collection.userName}'s Todo List` +
+    ` (${collection.getItemCounts().incomplete} items to do)`);
 //*********************************************/
 // let newId = collection.addTodo("Go for run");
 // let todoItem = collection.getTodoById(newId);

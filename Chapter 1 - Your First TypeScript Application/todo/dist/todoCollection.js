@@ -45,5 +45,12 @@ class TodoCollection {
             }
         });
     }
+    //this draws on the shape type declared at the top
+    getItemCounts() {
+        return {
+            total: this.itemMap.size,
+            incomplete: this.getTodoItems(false).length
+        };
+    }
 }
 exports.TodoCollection = TodoCollection;
