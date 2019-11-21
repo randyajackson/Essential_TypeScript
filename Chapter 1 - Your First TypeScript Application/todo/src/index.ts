@@ -9,10 +9,61 @@ import * as inquirer from 'inquirer';
     
     // let collection = new TodoCollection("Adam", todos);
     let collection: TodoCollection = new TodoCollection("Adam", todos);
+    let showCompleted = true;
 
-    console.clear();
-    console.log(`${collection.userName}'s Todo List` +
-                ` (${ collection.getItemCounts().incomplete } items to do)`);
+    function displayTodoList(): void {
+        console.log(`${collection.userName}'s Todo List`
+        + `${collection.getItemCounts().incomplete} items to do)`);
+
+        collection.getTodoItems(showCompleted).forEach(item => item.printDetails());
+    }
+
+    enum Commands {
+        Add = "Add New Task",
+        Toggle = "Show/Hide Completed",
+        Quit = "Quit"
+    }
+
+    function promptAdd(): void {
+        console.clear();
+
+        inquirer.prompt({ type: "input", name: "add", message: "Enter task:"})
+        .then(answers => { 
+            if ( answers["add"] !== ""){
+                collection.addTodo(answers["add"]);
+            }
+            promptUser();
+        })
+    }
+
+    function promptUser(): void {
+        console.clear();
+        displayTodoList();
+        inquirer.prompt({
+            type: "list",
+            name: "command",
+            message: "Choose option",
+            choices: Object.values(Commands),
+            //badProperty: true
+            //there is no configuration property named badProperty in inquirer.js
+        }).then(answers => {
+            switch( answers["command"]) {
+                case Commands.Toggle:
+                    showCompleted = !showCompleted;
+                    promptUser();
+                    break;
+                case Commands.Add:
+                    promptAdd();
+                    break;
+            }
+        })
+    }
+
+    promptUser();
+
+    //console.clear();
+    //console.log(`${collection.userName}'s Todo List` +
+                //` (${ collection.getItemCounts().incomplete } items to do)`);
 
     //*********************************************/
     // let newId = collection.addTodo("Go for run");
@@ -29,9 +80,9 @@ import * as inquirer from 'inquirer';
     //code omitted in order to match output in book
     //above is used to enter one entry into TodoCollection
     //**********************************************/
-    collection.removeComplete();
+    //collection.removeComplete();
 
-    collection.getTodoItems(true).forEach(item => item.printDetails());
+    //collection.getTodoItems(true).forEach(item => item.printDetails());
     //getTodoItems is passed true which is assigned to includeComplete
 
     //commented declarations = less explicit / using JS
