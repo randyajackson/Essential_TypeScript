@@ -1,0 +1,197 @@
+Starting a typescript program:
+
+-create a todo folder
+-cd into todo
+
+-create a tsconfig.json file with the following:
+{
+    "compilerOptions": 
+    {
+    "target": "es2018",
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "module": "commonjs"
+    }
+}
+
+-create a dist and src folder
+
+-create ts files in src
+
+-when ready to compile navigate to the todo folder
+>and enter tsc
+
+the compiled javascript will be located in the dist folder
+
+--------------------------------------------------------------
+
+Do not make changes to the js files in dist as they will be 
+overwritten by compiled ts code.
+
+--
+
+The first program will be a todo list.
+
+--
+
+Classes are templates that describe a data type.
+
+--
+
+Javascript supports classes with constructors, properties, and methods,
+but features such as access control keywords like public are supplied by
+TypeScript.
+
+--
+
+The headline TypeScript feature is static typing, which allows the type of each 
+property and parameter in the TodoItem class to be specified.
+
+public id: number;
+
+--
+
+public id: number;
+Is an example of a type annotation.
+This tells the TypeScript compiler that id is of type number.
+
+--
+
+TypeScript assumes all methods and properties are public
+unless otherwise indicated.
+
+--
+
+todoCollections is a class used to colllect together the todo items so 
+they can be managed more easily.
+
+--
+
+Testing will take place in th index.ts file.
+
+--
+
+Everything in index.ts is using pure javascript features.
+
+Even without infering the static type information
+(like public or pivate)
+it is still able to compile into JS code.
+
+--
+
+Using print of a variable like ${collection.userName}
+the left tick apostraphe (The ~ key) must be used.
+
+--
+
+let <var name> : <type> =
+way to type vatiables in typescript
+
+--
+
+TypeScript supports generic types.
+Generic types are placeholders for types that are resolved
+when an object is created.
+
+Ex:
+Map is a general purpose collection that stores key/value pairs
+
+In Javascript, a map can be used to store any mix of data types
+using any mixture of keys.
+
+To restrict the types that can be used with the map "itemMap"
+in todoCollections, generic type arguments are used to tell the
+TypeScript compiler which variable types are allowed.
+
+private itemMap = new Map<number, TodoItem>();
+
+"The map will store TodoItems using numbers as keys."
+
+--
+
+The TodoCollection class defines a getTodoById method that returns
+a TodoItem based on which number is given.
+
+getTodoItems provides access to all of the TodoItems objects that
+TodoCollection is managing.
+
+getTodoItems method gets objects from the Map using its values
+method and uses them to create an array using the javascript
+spread (...) operator.
+
+includeComplete selects which parameters are included.
+
+--
+
+removeComplete uses Map.forEach to check each TodoItem stored
+in the map and remove those where complete = false.
+
+--
+
+Combination of property names and the types of their values
+is referred to as "shape".
+
+A specific combination of names and types is known as 
+a shape type.
+
+--
+
+The type keyword is used to create a type alias.
+(Way to assign a name to a shape type)
+
+--
+
+Using Third - Party Packages
+---------------------------------------------------------
+
+TypeScript does not prevent JavaScript code from being used, but
+it isn't able to provide any assistance for its use.
+
+The compiler doesn't have insight to the data types being used
+for inquirer.
+
+2 ways to provide TypeScript with info for static typing:
+1. describe the types yourself
+2. type declarations provided by someone else
+
+The Definitely Typed
+project is a repository of TypeScript type declarations for thousands of JavaScript packages, including the
+Inquirer.js package
+
+npm install --save-dev @types/inquirer
+
+save-dev argument is used for packages that are used in development but that are not part of the
+application
+
+@types/ followed by the name of the package for which type descriptions
+are required.
+
+----------------------------------------------------------
+
+let completedTasks = answers["complete"] as number[];
+as number[] is a type definition
+This is a type assertion.
+
+----------------------------------------------------------
+
+Protected keyword tells typescript compiler that a property can only be accessed by a class
+or its subclasses.
+
+----------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

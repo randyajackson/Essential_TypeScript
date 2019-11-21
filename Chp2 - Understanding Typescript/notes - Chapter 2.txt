@@ -1,0 +1,29 @@
+TypeScript is a superset of Javascript.
+
+It is used to create safe predictable code.
+
+Its headline feature is statis typing, making Javascript more predictable for those from C# and Java.
+
+https://github.com/Apress/essential-typescript    -- updates to the book
+
+----------------------------------------------------------------------------------
+
+Javascript compile proccess:
+typescript / javascript ----------> typescript compiler --------------> javascript
+
+Typescript features can be applied slectively.
+
+You can use Typescript in the parts of the code that are likely to be more
+problematic.
+
+----------------------------------------------------------------------------------
+
+Some typescript features do not appear in the generated javascript.
+You must understand how to use a javascript feature and what the static types are
+before using typescript in some situations.
+
+----------------------------------------------------------------------------------
+
+Some features are not translated from modern js to legacy js through typescript.
+
+
