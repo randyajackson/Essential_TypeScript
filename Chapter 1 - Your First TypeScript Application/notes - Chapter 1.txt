@@ -144,6 +144,31 @@ The type keyword is used to create a type alias.
 Using Third - Party Packages
 ---------------------------------------------------------
 
+TypeScript does not prevent JavaScript code from being used, but
+it isn't able to provide any assistance for its use.
+
+The compiler doesn't have insight to the data types being used
+for inquirer.
+
+2 ways to provide TypeScript with info for static typing:
+1. describe the types yourself
+2. type declarations provided by someone else
+
+The Definitely Typed
+project is a repository of TypeScript type declarations for thousands of JavaScript packages, including the
+Inquirer.js package
+
+npm install --save-dev @types/inquirer
+
+save-dev argument is used for packages that are used in development but that are not part of the
+application
+
+@types/ followed by the name of the package for which type descriptions
+are required.
+
+----------------------------------------------------------
+
+
 
 
 
