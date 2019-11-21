@@ -168,7 +168,16 @@ are required.
 
 ----------------------------------------------------------
 
-Testing
+let completedTasks = answers["complete"] as number[];
+as number[] is a type definition
+This is a type assertion.
+
+----------------------------------------------------------
+
+Protected keyword tells typescript compiler that a property can only be accessed by a class
+or its subclasses.
+
+----------------------------------------------------------
 
 
 

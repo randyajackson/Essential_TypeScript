@@ -9,10 +9,12 @@
   "license": "ISC",
   "dependencies": {
     "@types/node": "^12.12.11",
-    "inquirer": "^6.5.2"
+    "inquirer": "^6.5.2",
+    "lowdb": "^1.0.0"
   },
   "devDependencies": {
-    "@types/inquirer": "^6.5.0"
+    "@types/inquirer": "^6.5.0",
+    "@types/lowdb": "^1.0.9"
   },
   "description": ""
 }

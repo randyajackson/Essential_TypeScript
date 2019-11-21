@@ -11,6 +11,7 @@ class TodoCollection {
         this.todoItems = todoItems;
         this.nextId = 1;
         //how to set up a type for map
+        //private itemMap = new Map<number, TodoItem>();
         this.itemMap = new Map();
         todoItems.forEach(item => this.itemMap.set(item.id, item));
     }

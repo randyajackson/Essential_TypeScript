@@ -1,6 +1,8 @@
 import {TodoItem} from "./todoItem";
 import {TodoCollection} from "./todoCollection";
 import * as inquirer from 'inquirer';
+import { JsonTodoCollection } from "./jsonTodoCollection";
+
 
     //let todos = [
     let todos: TodoItem[] = [
@@ -8,12 +10,12 @@ import * as inquirer from 'inquirer';
     new TodoItem(3, "Collect Tickets"), new TodoItem(4, "Call Joe", true)];
     
     // let collection = new TodoCollection("Adam", todos);
-    let collection: TodoCollection = new TodoCollection("Adam", todos);
+    let collection: TodoCollection = new JsonTodoCollection("Adam", todos);
     let showCompleted = true;
 
     function displayTodoList(): void {
-        console.log(`${collection.userName}'s Todo List`
-        + `${collection.getItemCounts().incomplete} items to do)`);
+        console.log(`${collection.userName}'s Todo List `
+        + `(${collection.getItemCounts().incomplete} items to do)`);
 
         collection.getTodoItems(showCompleted).forEach(item => item.printDetails());
     }
@@ -45,7 +47,9 @@ import * as inquirer from 'inquirer';
         choices: collection.getTodoItems(showCompleted).map( item =>
             ({name: item.task, value: item.id, checked: item.complete}))
         }).then( answers => {
+
             let completedTasks = answers["complete"] as number[];
+
             collection.getTodoItems(true).forEach(item =>
                 collection.markComplete(item.id,
                     completedTasks.find(id => id === item.id) != undefined ));
