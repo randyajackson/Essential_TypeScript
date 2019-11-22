@@ -26,4 +26,6 @@ before using typescript in some situations.
 
 Some features are not translated from modern js to legacy js through typescript.
 
+----------------------------------------------------------------------------------
+
 

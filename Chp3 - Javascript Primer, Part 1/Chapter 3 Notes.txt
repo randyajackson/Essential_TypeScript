@@ -1,0 +1,45 @@
+Understanding TypeScript makes understanding Javascript easier.
+
+--------------
+types:
+
+primitives
+number - represents numeric values, does not distinguish between int and float
+string - text values
+boolean - true/false
+symbol - unique constant values such as keys in collections
+null - nonexistant or invalid reference
+undefined - type used when a variable has been defined but not assigned a values
+
+
+not primitive
+object - compound values fromed from individual properties and values.
+
+---------------
+
+In Javascript values have types, not variables.
+
+----------------
+
+When an operator is applied to variables of different types, type coercion occurs.
+
+== is an abstract equality comparison :
+"hatPrice == bootsPrice" 
+When a string is compared to a number, the string converts to a number.
+
+Abstract Equality steps:
+ https://www.ecma-international.org/ecma-262/7.0/#sec-abstract-equalitycomparison
+
+"hatPrice + bootsPrice":
+one variable is converted
+
+If either of the variables is a string, the other is converted to a string.
+
+TypeScript has features to limit unwanted coercion.
+
+----------------------
+
+arrow functions = fat arrow functions = lambda expressions
+
+
+
