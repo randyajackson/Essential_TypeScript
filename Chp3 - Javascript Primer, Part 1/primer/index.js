@@ -51,5 +51,7 @@ console.log(sumPrices(Number(hatPrice), Number(bootsPrice)));
 
 console.log(sumPricesMoreFlexible(Number(hatPrice), Number(bootsPrice), "hello" , NaN, null));
 
+l
+
 
 

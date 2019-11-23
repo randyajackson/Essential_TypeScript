@@ -41,5 +41,46 @@ TypeScript has features to limit unwanted coercion.
 
 arrow functions = fat arrow functions = lambda expressions
 
+There are 3 parts to an arrow function:
+- input paremeters
+- equal sign and arrow =>
+- the result value
+
+-----------------------
+
+Working with arrays
+(index2.js)
+
+Javascript arrays are dynamically resized
+
+Size of array is not not specified when the array is created and will be allocated automatically.
+
+Spread operator (...)
+
+Usually used before the array name.
+Can be used to expand the contents of an array for easy concatenation.
+
+-----------------------
+
+Working with objects
+
+Braces contain a list of property names and values.
+Names are seperated from values with colons (:)
+
+Objects are dynamic.
+You can assign new properties at will or delete.
+
+Guarding Against undefined Objects and properties
+
+Have to be careful with handling objects as they may not be the shape you are expecting as they
+are dynamic.
+
+If you check for a value that is not defined, it will be "undefined".
+
+The best way to ensure checking use type coercion and the OR operator.
+let propertyCheck = hat.price || 0;
+
+
+
 
 
