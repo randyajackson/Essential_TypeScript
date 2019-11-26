@@ -1,0 +1,64 @@
+----------------------------------------------
+Understanding JavaScript Object Inheritance
+
+JavaScript objects have a link to another object, known as the prototype, from which they inherit properties
+and methods.
+
+Object provides some basic features that all objects
+inherit, including a method named toString.
+
+hat -----------inherits from ----------------> object
+
+Object is the prototype for most objects, but it also provides some methods that are used directly, rather
+than through inheritance, and which can be used to get information about prototypes.
+
+getPrototypeOf This method returns an object’s prototype.
+setPrototypeOf This method changes the prototype of an object.
+getOwnPropertyNames This method returns the names of an object’s own properties
+
+hat -----------inherits from ----------------> object
+boots -----------inherits from ----------------> object
+
+Prototypes are regular JavaScript objects
+new properties can be defined on prototypes
+new values can be assigned to existing properties
+
+let hatPrototype = Object.getPrototypeOf(hat);
+hatPrototype.toString = function() {
+    return `toString: Name: ${this.name}, Price: ${this.price}`;
+   }
+
+changes the toString method of both hat and boots
+
+-------------------------------------
+Creating custom prototypes
+
+Changes to Object should be made cautiously
+They affect all the other objects in the application.
+
+A better approach is to crerate a prototype specifically for those objects that are known to 
+have name and price properties.
+
+Which can be done using the Object.setPrototypeOf method.
+
+let ProductProto = {
+    toString: function() {
+    return `toString: Name: ${this.name}, Price: ${this.price}`;
+    }
+   }
+
+Object.setPrototypeOf(hat, ProductProto);
+Object.setPrototypeOf(boots, ProductProto);
+
+hats & boots ---- [inherits from] ---> ProductProto --- [inherits from] ----> Object
+
+Prototypes are defined like any other object.
+This creates a chain of prototypes that you can use.
+
+----------------------------------------
+Using constructor functions
+
+A constructor function:
+-creates a new object
+-configures its properties
+-assigns its prototype
