@@ -80,6 +80,118 @@ If you check for a value that is not defined, it will be "undefined".
 The best way to ensure checking use type coercion and the OR operator.
 let propertyCheck = hat.price || 0;
 
+You can also spread object properties 
+let otherHat = {...hat};
+
+otherHat now includes the properties from hat
+
+You can combine spread with more properties:
+let otherHat = {...hat, discounted: true, price: 10}
+
+--------------------------
+
+Getters and setters are functions that are invoked when a property value is read or assigned
+
+The get function returns a value automatically when a new value is set.
+
+When the property is requested, the getter responds with the value of the _price property.
+
+JavaScript doesn’t have any built-in support for private properties.
+The naming convention for private properties is an _ like _price.
+
+----------------------------
+
+Method is a property whose value is a function.
+
+----------------------------
+
+Understanding the this keyword
+
+function writeMessage(message) {
+ console.log(`${this.greeting}, ${message}`);
+}
+greeting = "Hello";
+writeMessage("It is sunny today");
+
+>Hello, It is sunny today
+
+values assigned names without let const or var keyword are assigned to global scope.
+In the above case this works as greeting is global.
+
+--
+
+function writeMessage(message) {
+ console.log(`${this.greeting}, ${message}`);
+}
+greeting = "Hello";
+writeMessage("It is sunny today");
+writeMessage.call(global, "It is sunny today");
+
+>Hello, It is sunny today
+>Hello, It is sunny today
+
+Functions are objects:
+They define methods, including the call methods.
+Call will invoke a method behind the scenes.
+First argument of call is the value for this.
+
+In Node, global is ussed, but window or self is required in browsers.
+
+--
+
+let myObject = {
+ greeting: "Hi, there",
+ writeMessage(message) {
+ console.log(`${this.greeting}, ${message}`);
+ }
+}
+greeting = "Hello";
+
+myObject.writeMessage("It is sunny today");
+(is the same as calling it the way below)
+myObject.writeMessage.call(myObject, "It is sunny today");
+
+Using call is one way to bind scope to the "This" keyword.
+
+Another way is to use the function's bind method.
+
+let myObject = {
+ greeting: "Hi, there",
+ writeMessage(message) {
+ console.log(`${this.greeting}, ${message}`);
+ }
+}
+
+!!!
+myObject.writeMessage = myObject.writeMessage.bind(myObject);
+!!!
+
+greeting = "Hello";
+myObject.writeMessage("It is sunny today");
+let myFunction = myObject.writeMessage;
+myFunction("It is sunny today");
+
+>Hi, there, It is sunny today
+>Hi, there, It is sunny today
+
+The bind method returns a new function that will have a persistent value for this when invoked.
+
+------------------------------
+
+Arrow functions don't have their own this value and inherit the closest value of this 
+they can find when executed.
+
+let writer = myObject.getWriter();
+writer("It is raining today");
+
+can be written in this way:
+
+myObject.getWriter()("It is raining today");
+
+
+
+
+
 
 
 
