@@ -1,0 +1,59 @@
+npm install --save-dev typescript@3.5.1
+
+The --save-dev argument tells NPM that these are packages for use in development 
+but not part of the application. @ symbol, followed by the version that is required.
+
+First, a tsconfig.json configuration file must be made for the Typescript compiler.
+
+{
+"compilerOptions": {
+"target": "es2018",
+"outDir": "./dist",
+"rootDir": "./src"
+}
+}
+configuration file is used to override the default settings 
+and ensures a consistent configuration is always used
+
+make a folder "dist" and "src"
+src is where typescript goes
+dist is where compiled js is put
+-------------------------------
+>tsc
+compiles the code
+-------------------------------
+tsc-watch This package watches a source code folder, runs the TypeScript 
+compiler when there is a change, and executes the compiled JavaScript code.
+-------------------------------
+tsc --listFiles
+to see the files that are selected by the compiler configuration.
+The files displayed by the listFiles option include the type 
+declarations that the compiler has located.
+-------------------------------
+Do not edit JS in the dist folder as it will be overwritten when compiled again.
+-------------------------------
+By default, the compiler continues to emit JavaScript code even when it encounters
+an error.
+To disable this, add the following to tsconfig.json:
+{
+"compilerOptions": {
+"target": "es2018",
+"outDir": "./dist",
+"rootDir": "./src",
+"noEmitOnError": true
+}
+}
+When the compiler runs, output will be generated only when there are no errors detected in the
+JavaScript code.
+-------------------------------
+Enabling watch mode to automatically compile.
+tsc --watch
+
+If you see a Check failed: U_SUCCESS(status) error,
+then may need to update to the latest version of Node.js
+-------------------------------
+Automatically Executing Code After Compilation
+
+
+
+
