@@ -3,6 +3,7 @@ function printMessage(msg: string): void {
 }
 
 printMessage("Hello, TypeScript");
+printMessage("Hello, TypeScript2");
 // //forcing an error
 // printMessage(100);
 // printMessage(700);

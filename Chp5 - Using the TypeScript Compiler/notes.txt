@@ -54,6 +54,27 @@ then may need to update to the latest version of Node.js
 -------------------------------
 Automatically Executing Code After Compilation
 
+npx tsc-watch --onsuccess "node dist/index.js"
+-------------------------------
+Starting the Compiler Using NPM
+
+add to package.json:
+"scripts": {
+"start": "tsc-watch --onsuccess \"node dist/index.js\""
+},
+Care must be taken to escape the quote characters required for the onsuccess argument
+-------------------------------
+Using the Version Targeting Feature
+
+TypeScript relies on the most recent versions of the JavaScript language
+recent features can be used during development to
+create code that can be executed by older JavaScript runtimes, such as legacy browsers
+
+
+
+
+
+
 
 
 
