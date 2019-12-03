@@ -62,3 +62,58 @@ A constructor function:
 -creates a new object
 -configures its properties
 -assigns its prototype
+
+let Product = function(name, price) {
+ this.name = name;
+ this.price = price;
+}
+
+Product.prototype.toString = function() {
+ return `toString: Name: ${this.name}, Price: ${this.price}`;
+}
+
+let hat = new Product("Hat", 100);
+let boots = new Product("Boots", 100);
+
+----------------------------------------
+Chaining Constructor functions
+
+let Product = function(name, price) {
+ this.name = name;
+ this.price = price;
+}
+
+Product.prototype.toString = function() {
+ return `toString: Name: ${this.name}, Price: ${this.price}`;
+}
+
+let TaxedProduct = function(name, price, taxRate) {
+ 
+ 
+ Product.call(this, name, price);
+ //The call method allows the new object to be passed to the next constructor through the this value.
+ //The second step is to link the prototypes together.
+ 
+ 
+ this.taxRate = taxRate;
+}
+
+Object.setPrototypeOf(TaxedProduct.prototype, Product.prototype);
+TaxedProduct.prototype.getPriceIncTax = function() {
+ return Number(this.price) * this.taxRate;
+}
+
+TaxedProduct.prototype.toTaxString = function() {
+ return `${this.toString()}, Tax: ${this.getPriceIncTax()}`;
+}
+
+let hat = new TaxedProduct("Hat", 100, 1.2);
+
+----
+
+A prototype can override a property or method by using the same name as one defined further along
+the chain. This is also known as shadowing in JavaScript, and it takes advantage of the way that the
+JavaScript runtime follows the chain.
+
+
+
