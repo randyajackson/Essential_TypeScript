@@ -69,6 +69,42 @@ Using the Version Targeting Feature
 TypeScript relies on the most recent versions of the JavaScript language
 recent features can be used during development to
 create code that can be executed by older JavaScript runtimes, such as legacy browsers
+-------------------------------
+
+{
+"compilerOptions": {
+"target": "es5",
+"outDir": "./dist",
+"rootDir": "./src",
+"noEmitOnError": true,
+>>"lib": ["es5", "dom", "es2015.collection"]
+}
+}
+
+adding lib tells the compiler that there will be a nonstandard set of features when the compiled
+javascript is executed
+
+There are more options for the "lib" flag available.
+
+-------------------------------
+Selecting a Module Format
+
+Module resolution:
+2 approaches
+
+Classic- searches modules in the local project
+Used when module property is set to es2015, system, or amd
+
+Node- locates modules in the node_modules folder
+
+
+
+
+
+
+
+
+
 
 
 

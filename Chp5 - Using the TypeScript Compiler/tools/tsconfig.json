@@ -4,6 +4,7 @@
 		"target": "es5",
 		"outDir": "./dist",
 		"rootDir": "./src",
-		"noEmitOnError": true
+		"noEmitOnError": true,
+		"lib": ["es5", "dom", "es2015.collection"]
 	}
 }
