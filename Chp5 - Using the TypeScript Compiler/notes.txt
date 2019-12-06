@@ -96,7 +96,14 @@ Classic- searches modules in the local project
 Used when module property is set to es2015, system, or amd
 
 Node- locates modules in the node_modules folder
+All other module settings, node format is used
+-------------------------------
 
+Useful Compiler Configuration Settings
+
+https://www.typescriptlang.org/docs/handbook/compiler-options.html
+
+-------------------------------
 
 
 
