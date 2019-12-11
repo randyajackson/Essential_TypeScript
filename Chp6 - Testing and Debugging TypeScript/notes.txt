@@ -1,0 +1,75 @@
+Debugging TypeScript Code
+-------------------------
+
+To help the debugger correlate the JavaScript code with the TypeScript code,
+the compiler can generate files known as source maps.
+
+{
+"compilerOptions": {
+"target": "es2018",
+"outDir": "./dist",
+"rootDir": "./src",
+"noEmitOnError": true,
+"module": "commonjs",
+>>"sourceMap": true
+}
+}
+
+sourceMap generates a map file with *.map extension along with js in the dist folder
+
+Add debugger; in TS file to create a breakpoint.
+
+Node ignores the debugger keyword.
+
+Using Visual Studio Code for Debugging
+-------------------------
+
+Using the Integrated Node.js Debugger
+-------------------------
+node inspect dist/index.js
+
+c continues to the next breakpoint (debugger)
+
+exec("message")
+>'Hello, TypeScript'
+
+help for a list of commands
+
+Using the Remote Node.js Debugging Feature
+-------------------------
+node --inspect-brk dist/index.js
+
+a message is printed that states:
+Debugger listening on ws://127.0.0.1:9229/e3cf5393-23c8-4393-99a1-d311c585a762
+
+open chrome and navigate to chrome://inspect
+
+click configure
+Target discovery settings and enter 127.0.0.1:9229
+
+click inspect link
+
+you can now debug in chrome
+
+Using the TypeScript Linter
+-------------------------
+The standard linter for TypeScript is TSLint
+
+npm install --save-dev tslint@5.16.0
+
+add tslint.json to the directory with:
+
+{
+"extends": ["tslint:recommended"],
+"linterOptions": {
+"format": "verbose"
+}
+}
+
+extends have different settings to be looked up.
+
+npx tslint --project tsconfig.json --config tslint.json
+to run the linter
+
+
+

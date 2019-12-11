@@ -1,0 +1,318 @@
+TypeScript compiler options
+--
+declaration 
+This option produces type declaration files when enabled, which can be useful in
+understanding how types have been inferred. These files are described in more detail
+in Chapter 14.
+
+noImplicitAny 
+This option prevents the implicit use of the any type, which the compiler uses when
+it can’t infer a more specific type.
+
+outDir 
+This option specifies the directory in which the JavaScript files will be placed.
+
+rootDir
+This option specifies the root directory that the compiler will use to locate
+TypeScript files.
+
+strictNullChecks
+This option prevents null and undefined from being accepted as values for other
+types.
+
+target 
+This option specifies the version of the JavaScript language that the compiler will
+target in its output.
+--
+
+Creating the types folder:
+npm init --yes
+npm install --save-dev typescript@3.5.1
+npm install --save-dev tsc-watch@2.1.2
+
+add tsconfig.json:
+{
+"compilerOptions": {
+"target": "es2018",
+"outDir": "./dist",
+"rootDir": "./src"
+}
+}
+
+add to package.json:
+{
+"name": "types",
+"version": "1.0.0",
+"description": "",
+"main": "index.js",
+"scripts": {
+>>>>>>>>"start": "tsc-watch --onsuccess \"node dist/index.js\""
+},
+"keywords": [],
+"author": "",
+"license": "ISC",
+"devDependencies": {
+"tsc-watch": "^2.1.2",
+"typescript": "^3.5.1"
+}
+}
+
+create a src and dist folder
+
+npm start to begin the compiler
+
+------------------------------------------------
+Understanding Static Types
+
+Javascript is dynamically typed.
+
+values have types instead of variables
+
+myVar = 12;
+value 12 is a number
+
+as soon as the value is assigned, the data type of the variable changes
+myVar = "Hello";
+value "Hello" is a string
+
+---------------------
+Creating a Static Type with a Type Annotation
+
+TypeScript’s static type feature makes type assumptions explicit and
+allows the compiler to report an error
+
+                            parameter type (number)
+function calculateTax(amount: number): number {}
+                                        return type (number)
+
+           giving a variable the type (number) 
+let price: number = 100;
+
+
+---------------------
+Using Implicitly Defined Static Types
+
+Typescript can also infer types, so:
+let price = 100
+would also work.
+
+The output of calculateTax can be implicitly defined as well.
+
+function calculateTax(amount: number) {
+    return amount * 1.2;
+}
+
+It knows that only numbers come in, 1.2 is a number, and x*y = number
+so the output result is inferred to be a number.
+
+function calculateTax(amount: number) {
+return (amount * 1.2).toFixed(2);
+}
+let price = 100;
+let taxAmount = calculateTax(price);
+let halfShare = taxAmount / 2;
+
+In this instance, .toFixed() returns a string assigned
+halfShare = string / number 
+causes an error. In typescript, automatic type coercion is restricted.
+
+****************
+Add "declaration": true
+to compilerOptions in tsconfig.
+
+This tells the compiler to generate files that contain type information alongside
+the javascript that it produces
+
+declare let myVar: any;
+declare function calculateTax(amount: number): number;
+declare let price: number;
+declare let taxAmount: number;
+declare let halfShare: number;
+
+The file reveals the types that the compiler has inferred for the statements.
+
+---------------------
+Using the Any Type
+
+function calculateTax(amount: any): any {
+return (amount * 1.2).toFixed(2);
+}
+
+amount can be any parameter type
+output can be any parameter type
+
+let price = 100;
+let taxAmount = calculateTax(price);
+let halfShare = taxAmount / 2;
+
+taxAmount / 2 is allowed since any type is used.
+
+results:
+Price: 100
+Full amount in tax: $120.00
+Half share: NaN
+
+---------------------
+Using Implicitly Defined Any Types
+
+The TypeScript compiler will use any when it is assigning types implicitly and 
+cannot identify a more specific type to use.
+
+This can simplify working with third-party JavaScript packages.
+
+---------------------
+Disabling Implicit Any Types
+
+It is good practice to disable the implicit
+use of any by setting the compiler’s noImplicityAny setting
+
+Add to compilerOptions in tsconfig.json:
+"noImplicitAny": true
+
+function calculateTax(amount): number {
+    return amount * 1.2;
+}
+
+This now throws an error, as the parameter cannot be implicitly an "any" type.
+
+---------------------
+Using Type Unions
+
+Any allows type freedom.
+TypeScript provides type unions, which specifies a set of types.
+
+function calculateTax(amount: number, format: boolean): string | number {
+const calcAmount = amount * 1.2;
+return format ? `$${calcAmount.toFixed(2)}` : calcAmount;
+}
+let taxNumber = calculateTax(100, false);
+let taxString = calculateTax(100, true);
+
+string and number are set as return types using the syntax:
+union type (string) | union type (number)
+
+the type of taxNumber here is String | number
+the type of taxNumber is not just number
+
+if there is a type union of String | number
+the only usable methods are those shared by string and number
+
+Number:
+toExponential()
+toFixed()
+toPrecision()
+toString()
+
+String:
+charAt()
+cocat()
+includes()
+toString()
+
+String | Number:
+toString()
+
+---------------------
+Using Type Assertions
+
+A Type Assertion tells the TypeScript compiler to treat a value as a specific type.
+This is also called type narrowing,
+
+Type assertion is one of the ways you can narrow a type from a union.
+
+function calculateTax(amount: number, format: boolean): string | number {
+const calcAmount = amount * 1.2;
+return format ? `$${calcAmount.toFixed(2)}` : calcAmount;
+}
+
+let taxNumber = calculateTax(100, false) as number;
+let taxString = calculateTax(100, true) as string;
+console.log(`Number Value: ${taxNumber.toFixed(2)}`);
+console.log(`String Value: ${taxString.charAt(0)}`);
+
+Type assertions are happening in these 2 lines:
+let taxNumber = calculateTax(100, false) as number;
+let taxString = calculateTax(100, true) as string;
+
+The keyword is "as" and following is the target type
+
+This is equivalent to saying:
+let taxNumber: number = calculateTax(100, false) as number;
+let taxString: string = calculateTax(100, true) as string;
+
+This allows specific methods to be used:
+
+Number:
+toExponential()
+toFixed()
+toPrecision()
+toString()
+
+String:
+charAt()
+cocat()
+includes()
+toString()
+
+Also narrows the type to Number or String instead of "Number | String".
+
+---------------------
+
+Asserting to an Unexpected Type
+
+The compiler checks that the type used in an assertion is expected.
+
+If the output of the function is String | number,
+you cannot use say:
+let taxNumber = calculateTax(100, false) as boolean;
+This will cause error.
+
+Usually to resolve, expand the output types or change the type assumption.
+
+However, you can force the assertion and override the compiler’s warning by 
+first asserting to any and then to the type you require.
+
+let taxBoolean = calculateTax(100, false) as any as boolean;
+
+Assertions only affect the type checking process and does not perform type coercion.
+
+print(taxBoolean)
+>Boolean Value: 120
+
+Alternative syntax:
+let taxString = calculateTax(100, true) as string;
+==
+let taxString = <string> calculateTax(100, true);
+The latter cannot be used in TSX files though, commonly used in react files.
+
+---------------------
+
+Using a Type Guard
+
+Using typeof is a way to protect functions / conditions when using Type Unions:
+
+function calculateTax(amount: number, format: boolean): string | number {
+const calcAmount = amount * 1.2;
+return format ? `$${calcAmount.toFixed(2)}` : calcAmount;
+}
+let taxValue = calculateTax(100, false);
+if (typeof taxValue === "number") {
+console.log(`Number Value: ${taxValue.toFixed(2)}`);
+} else if (typeof taxValue === "string") {
+console.log(`String Value: ${taxValue.charAt(0)}`);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
