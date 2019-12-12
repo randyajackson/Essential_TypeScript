@@ -1,0 +1,49 @@
+Using Functions
+--------------------
+
+TypeScript compiler options:
+
+target 
+This option specifies the version of the JavaScript language that the compiler
+will target in its output.
+
+outDir 
+This option specifies the directory in which the JavaScript files will be placed.
+
+rootDir 
+This option specifies the root directory that the compiler will use to locate
+TypeScript files.
+
+declaration 
+This option produces type declaration files when enabled, which can be useful
+in understanding how types have been inferred. These files are described in
+more detail in Chapter 14.
+
+strictNullChecks
+This option prevents null and undefined from being accepted as values for
+other types.
+
+noImplicitReturns
+This option requires all paths in a function to return a result.
+noUnusedParameters This option causes the compiler to produce a warning if a function defines
+parameters that are not used.
+--------------------
+
+Beginning with the following tsconfig:
+
+{
+"compilerOptions": {
+"target": "es2018",
+"outDir": "./dist",
+"rootDir": "./src",
+"declaration": true,
+//"noImplicitAny": true,
+//"strictNullChecks": true
+}
+}
+
+
+--------------------
+Defining Functions
+
+
