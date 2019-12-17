@@ -25,5 +25,200 @@ strictNullChecks
  This option prevents null and undefined from being accepted as values for other
 types.
 
+Working with Arrays
+----------------------
+
+JavaScript arrays can contain any combination of types and have variable length
+
+TypeScript doesn’t change the flexible sizing of arrays, but it does allow the data types 
+they contain to be restricted through the use of type annotations
+
+            array type [] < square brackets
+let prices: number[] = [100,75,42];
+
+To use type intersection with arrays you would use (number | string)[]
+
+let prices: number[]
+is the same as
+let prices: Array<number>
+
+Using Inferred Typing for Arrays
+----------------------
+
+prices.forEach((price, index) => {
+    writePrice(names[index], calculateTax(price));
+});
+
+//enable the declaration option in tsconfig if you are not sure
+//of the typing that is being generated from inferring
+//index.d.ts in the src folder
+
+Avoiding Problems with Inferred Array Types
+----------------------
+
+The compiler infers array types using the values used to populate the array when it is created.
+
+This can lead to type errors if the values used to populate an array are accidentally mixed
+
+let prices = [100, 75, 42, "20"];
+let names = ["Hat", "Gloves", "Umbrella", "Sunglasses"];
+
+This causes the inferred array type to be (string | number)[]
+
+Avoiding Problems with Empty Arrays
+----------------------
+
+let prices = [];
+prices.push(...[100, 75, 42, "20"]);
+
+index.d.ts will show:
+declare let prices: any[];
+
+Understanding the never Array Type Pitfall
+----------------------
+
+TypeScript infers types for empty arrays differently when null and undefined values are 
+not assignable to other types.
+
+The strictNullChecks setting tells the compiler to restrict the use of null and undefined values and
+prevents the compiler from using any when inferring the type of an empty array.
+
+Inferring the never type ensures that the array doesn’t escape the type checking process and 
+the code won’t compile until a type is asserted for the array or the array is initialized using 
+values that allow the compiler to infer a less restrictive type.
+
+Working with Tuples
+----------------------
+
+Tuples are fixed-length arrays, where each element in the array can have a different type.
+
+let hat: [string, number] = ["Hat", 100];
+let gloves: [string, number] = ["Gloves", 75];
+writePrice(hat[0], hat[1]);
+writePrice(gloves[0], gloves[1]);
+
+let <name>: [element type, element type] = ["hat", 100];
+
+Without the type annotation the compile would infer the type [string | number].
+
+Processing Tuples
+----------------------
+
+The restrictions on the number of elements and the element types are enforced entirely by the TypeScript
+compiler, and, at runtime, a tuple is implemented as a regular JavaScript array.
+
+hat.forEach((h: string | number) => {
+    if (typeof h === "string") 
+    { console.log(`String: ${h}`); } 
+    else
+    { console.log(`Number: ${h.toFixed(2)}`); }
+    });
+
+The function passed to the forEach method must receive string | number values.
+
+Using Tuple Types
+----------------------
+
+Tuples have a distinct type that can be used just like any type
+
+You can create arrays of tuples, use tuples in type unions, use type guards, etc
+
+Typeof does not work for testing if a variabl is an array.
+You need to use instanceof.
+
+if(elem instanceof Array) [works for checking if it is an array]
+...
+if(typeof elem === "boolean") [ works for testing if a value is boolean]
+
+Using Enums
+----------------------
+
+An enum allows a collection of values to be used by name, which makes code easier to read 
+and ensures that a fixed set of values is used consistently.
+
+enum Product { Hat, Gloves, Umbrella }
+The enum values are accessed in the form <enum>.<value>
+
+Enums are implemented entirely by the TypeScript compiler, relying on type checking during 
+compilation and standard JavaScript features at runtime.
+
+enum Product { Hat, Gloves, Umbrella }
+
+[Product.Hat, Product.Gloves, Product.Umbrella].forEach(val => {
+console.log(`Number value: ${val}`);
+});
+
+>Number value: 0
+>Number value: 1
+>Number value: 2
+
+Because enums are implemented using JavaScript number values, an enum can be assigned a number
+and is displayed as a number value
+
+enum Product { Hat, Gloves, Umbrella }
+
+let productValue: Product = 0;
+let productName: string = Product[productValue];
+console.log(`Value: ${productValue}, Name: ${productName}`);
+
+>Value: 0, Name: Hat
+
+Using Specific Enum Values
+----------------------
+
+By default,the TypeScript compiler starts assigning number values for an enum with zero and 
+will compute the values by incrementing the previous value.
+
+in dist/index.d.ts you will find:
+
+declare enum Product {
+    Hat = 0,
+    Gloves = 1,
+    Umbrella = 2
+}
+
+Enums can also be defined with literal values, where a specific value is used.
+
+enum Product { Hat, Gloves = 20, Umbrella }
+
+declare enum Product {
+Hat = 0,
+Gloves = 20,
+Umbrella = 21
+}
+
+Using String Enums
+----------------------
+
+The default implementation of enums represents each value with a number, but the compiler can also use
+string values for enums
+
+enum City { London = "London", Paris = "Paris", NY = "New York"}
+console.log(`City: ${City.London}`);
+
+>City: London
+
+Understanding the Value-Checking Limitation
+----------------------
+
+Enums can be useful, but there are some limitations because they are a feature that is implemented entirely
+by the TypeScript compiler and then translated into pure JavaScript.
+
+The compiler is excellent at checking types for enums, but it doesn’t do anything to ensure that legal number
+values are used.
+
+let productValue: Product = 0;
+
+The compiler doesn’t prevent the assignment of a number to a variable whose type is an enum when
+the number doesn’t correspond to one of the enum values
+
+Product 0 is undefined
+
+Understanding the Type Guard Limitation
+----------------------
+
+
+
+
 
 
