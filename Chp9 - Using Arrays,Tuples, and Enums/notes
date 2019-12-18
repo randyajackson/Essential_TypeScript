@@ -216,8 +216,206 @@ Product 0 is undefined
 
 Understanding the Type Guard Limitation
 ----------------------
+Testing types is done using the JavaScript typeof keyword,
+and since enums are implemented using JavaScript number values, typeof 
+cannot be used to distinguish between enum and number values
 
+let productValue: Product = Product.Hat;
+if (typeof productValue === "number") {
+console.log("Value is a number");
+}
+let unionValue: number | Product = Product.Hat;
+if (typeof unionValue === "number") {
+console.log("Value is a number");
+}
 
+>Value is a number
+>Value is a number
+
+Using Constant Enums
+----------------------
+The TypeScript compiler creates an object that provides the implementation for an enum.
+
+the compiler uses an object to implement an enum
+
+enum Product { Hat, Gloves, Umbrella }
+let productValue = Product.Hat;
+
+Compiles to js as such:
+
+var Product;
+(function (Product) {
+Product[Product["Hat"] = 0] = "Hat";
+Product[Product["Gloves"] = 1] = "Gloves";
+Product[Product["Umbrella"] = 2] = "Umbrella";
+})(Product || (Product = {}));
+let productValue = Product.Hat;
+
+a Product object is created
+and that it is used when the value is assigned to the productValue variable
+
+To prevent the compiler from using an object to implement an enum, the const keyword can be used
+when the enum is defined in the TypeScript file
+
+Const enums are more restrictive than regular enums
+
+const enum Product { Hat, Gloves, Umbrella }
+let productValue = Product.Hat;
+
+Compiles to js as such:
+
+let productValue = 0 /* Hat */;
+
+if you try in TS:
+let productName = Product[0];
+
+>src/index.ts(11,27): error TS2476: A const enum member can only be accessed using a string
+literal
+
+Using Literal Value Types
+----------------------
+
+A literal value type specifies a specific set of values and allows only those values.
+
+The effect is to treat a set of values as a distinct type
+
+It is a useful feature but can be difficult to understand because it blurs the
+separation between types and values.
+
+let restrictedValue: 1 | 2 | 3 = 3;
+console.log(`Value: ${restrictedValue}`);
+
+Looks similar to a type union, but literal values are used instead of data types.
+
+1 | 2 | 3 Literal Values
+2 <- Literal Value Type
+
+restrictedValue variable can only be assigned 1,2, or 3
+
+Anything else throws a compiler error.
+
+let restrictedValue: 1 | 2 | 3 = 1;
+let secondValue: 1 | 10 | 100 = 1;
+
+restrictedValue = secondValue;
+//is allowed
+
+secondValue = 100;
+
+restrictedValue = secondValue;
+//src/index.ts(7,1): error TS2322: Type '100' is not assignable to type '1 | 2 | 3'
+
+console.log(`Value: ${restrictedValue}`);
+
+Using Literal Value Types in Functions
+----------------------
+
+Literal value types are most helpful when used with functions, allowing parameters or results to 
+be restricted to a specific set of values
+
+function calculatePrice(quantity: 1 | 2, price: number): number {
+return quantity * price;
+}
+
+let total = calculatePrice(2, 19.99);
+console.log(`Price: ${total}`);
+
+quantity can only be 1 or 2
+
+Mixing Value Types in a Literal Value Type
+----------------------
+A literal value type can be made up of any combination of values that can be expressed literally
+including enums.
+
+function getRandomValue(): 1 | 2 | 3 | 4 {
+
+    return Math.floor(Math.random() * 4) + 1 as 1 | 2 | 3 | 4;
+
+}
+
+enum City { London = "LON", Paris = "PAR", Chicago = "CHI" };
+
+function getMixedValue(): 1 | "Hello" | true | City.London {
+
+switch (getRandomValue()) {
+    case 1:
+        return 1;
+    case 2:
+        return "Hello";
+    case 3:
+        return true;
+    case 4:
+        return City.London;
+}
+
+}
+console.log(`Value: ${getMixedValue()}`);
+
+getRandomValue only outputs 1,2,3, or 4
+
+gitMixedValue only outputs 1, "Hello", true, or City.London
+
+Nice way to type the outputs explicitly to allow for different types.
+
+Using Overrides with Literal Value Types
+----------------------
+the relationship between a function’s parameter and result types can be
+expressed using type overrides, restricting the effect of using type unions.
+
+Type overrides can also be applied
+to literal value types, as shown in Listing 9-28, which are essentially unions 
+for individual values.
+
+function getMixedValue(input: 1): 1;
+function getMixedValue(input: 2 | 3): "Hello" | true;
+function getMixedValue(input: 4): City.London;
+function getMixedValue(input: number): 1 | "Hello" | true | City.London {
+switch (input) {
+case 1:
+return 1;
+case 2:
+return "Hello";
+case 3:
+return true;
+case 4:
+default:
+return City.London;
+}
+}
+
+let first = getMixedValue(1);
+let second = getMixedValue(2);
+let third = getMixedValue(4);
+console.log(`${ first}, ${second}, ${third}`);
+
+Using Type Aliases
+----------------------
+
+TypeScript provides the type alias feature, which allows a custom type combination to
+be assigned a name and applied where it is needed
+
+type comboType = [string, number | true, 1 | 2 | 3 | City.London][];
+
+function getValue(input: comboType): comboType {
+    return [["Apples", 100, 2], ["Oranges", true, 3]];
+}
+
+let result: comboType = getValue([["Bananas", true, 1]]);
+
+console.log(`Result: ${result}`);
+
+>Result: Apples,100,2,Oranges,true,3
+
+The listing uses a combination of types that would be difficult and tedious to repeat consistently every
+time it is required:
+
+type comboType = [string, number...]
+
+type: keyword
+comboType: Alias Name
+[string, number...]: Type
+
+The name assigned to the alias is used in place of the full type description.
 
 
 
