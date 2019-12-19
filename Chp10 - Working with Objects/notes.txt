@@ -1,0 +1,305 @@
+Working with Objects
+---------------------
+
+tsconfig options used:
+
+target 
+This option specifies the version of the JavaScript language that the
+compiler will target in its output.
+
+outDir 
+This option specifies the directory in which the JavaScript files will
+be placed.
+
+rootDir
+This option specifies the root directory that the compiler will use
+to locate TypeScript files.
+
+declaration 
+This option produces type declaration files when enabled, which
+can be useful in understanding how types have been inferred.
+These files are described in more detail in Chapter 14.
+
+strictNullChecks
+ This option prevents null and undefined from being accepted as
+values for other types.
+
+suppressExcessPropertyErrors
+This option prevents the compiler from generating errors for
+objects that define properties not in a specified shape.
+
+JavaScript objects are collections of properties that can be created using the literal syntax, 
+constructor functions, or classes.
+
+objects can be altered once they have been created
+
+The TypeScript compiler tries to make sure that objects are used consistently by looking for 
+common shape characteristics.
+
+The best way to see how this works is to look at the declaration files that the compiler
+generates when its declarations option is enabled.
+
+Given:
+let hat = { name: "Hat", price: 100 };
+let gloves = { name: "Gloves", price: 75 };
+let products = [hat, gloves];
+
+This compiles to:
+declare let hat: {
+    name: string;
+    price: number;
+};
+declare let gloves: {
+    name: string;
+    price: number;
+};
+declare let products: {
+    name: string;
+    price: number;
+}[];
+
+adding:
+let umbrella = { name: "Umbrella" };
+let products = [hat, gloves, umbrella];
+products.forEach(prod => console.log(`${prod.name}: ${prod.price}`));
+
+>Property 'price' does not exist on type '{ name: string; }'.
+
+the forEach method reads a price property which is not present in umbrella
+
+products compile has changed from:
+declare let products: {
+    name: string;
+    price: number;
+}[];
+
+to
+
+declare let products: {
+    name: string;
+}[];
+
+the compiler creates a type that has the common properties of the objects it
+contains because they are the only properties that are safe to work with
+
+Using Object Shape Type Annotations
+---------------------
+
+For object literals, the TypeScript compiler infers the type of each property using the value 
+that it has been assigned.
+
+Types can also be explicitly specified using type annotations
+
+Object shape type annotations:
+let products: { name: string, price: number }[] = [hat, gloves, umbrella];
+
+Understanding How Shape Types Fit
+---------------------
+
+To match a type, an object must define all the properties in the shape.
+
+let umbrella = { name: "Umbrella", price: 30, waterproof: true };
+
+umbrella now matches the shape of the products array type becuase it has name and price
+
+waterproof is ignored because it is not part of the shape type
+
+Notice that type annotations are not required to indicate 
+that individual objects have a specific shape.
+
+The TypeScript compiler automatically determines whether an object conforms to a shape by 
+inspecting its properties and their values.
+
+Using Optional Properties for Irregular Shapes
+---------------------
+Optional properties make a shape type more flexible, allowing it to match objects that don’t have 
+those properties
+
+price?: number // waterproof?: boolean
+Optional properties
+
+let products: { name: string, price?: number, waterproof?: boolean }[]
+= [hat, gloves, umbrella];
+
+products.forEach(prod =>
+console.log(`${prod.name}: ${prod.price} Waterproof: ${ prod.waterproof }`));
+
+the value of the optional property will be either the value defined by the object or undefined
+
+Including Methods in Shape Types
+---------------------
+
+let products: { name: string, price?: number, hasFeature?(Feature): boolean }[] 
+= [hat, gloves, umbrella];
+
+hasFeature: method name
+(Feature): Parameter type
+boolean: result type
+
+Enforcing Strict Checking for Methods
+---------------------
+
+TypeScript compiler can report errors when
+an optional method specified by a shape type is used without checking for undefined values.
+
+when using
+
+products.forEach(prod => console.log(`${prod.name}: ${prod.price} 
+Waterproof?: ${prod.hasFeature(Feature.Waterproof)}`));
+
+>src/index.ts(13,22): error TS2722: Cannot invoke an object which is possibly 'undefined'.
+
+products.forEach(prod => console.log(`${prod.name}: ${prod.price} 
+Waterproof?: ${prod.hasFeature ? prod.hasFeature(Feature.Waterproof) : "false"}`));
+
+corrects this issue
+
+Using Type Aliases for Shape Types
+---------------------
+
+A type alias can be used to give a name to a specific shape, making it easier to refer to the shape in code
+consistently.
+
+Adding in:
+
+type Product = {
+    name: string,
+    price?: number,
+    hasFeature?(Feature): boolean
+    };
+
+and modifying:
+let products: Product[] = [hat, gloves, umbrella];
+
+The alias assigns a name to the shape, which can be used in type annotations
+
+an alias named Product is created and used as the type for the array
+
+Using an alias doesn’t change the output from the code when it is compiled and executed.
+
+Dealing with Excess Properties
+---------------------
+
+type annotations can often be omitted
+
+let mirrorShades = { name: "Sunglasses", price: 54, finish: "mirrored"};
+let darkShades: Product = { name: "Sunglasses", price: 54, finish: "flat"};
+
+let products: Product[] = [hat, gloves, umbrella, mirrorShades, darkShades];
+
+causes error
+mirrorShades and darkShades are treated differently by the compiler
+They do have the same shape.
+darkShades has a Product type annotation.
+The "finish" property isn't part of the Product shape and is known as an "excess property".
+darkShades object can be used as a Product
+
+The error can be prevented by removing the excess property or by removing the type annotation.
+
+Adding the option "suppressExcessPropertyErrors": true
+resolves the errors caused.
+
+When the suppressExcessPropertyErrors setting is true, the compiler won’t report an error if an
+object literal defines properties that are not part of the type declared by the annotation.
+
+So at this point Product does not solely require name, price, hasFeature.
+
+Using Shape Type Unions
+---------------------
+
+type unions are types in their own right and contain the properties that are 
+defined by all of their constituent types
+
+This isn’t a useful feature when dealing with unions of primitive data types because 
+there are few common properties, but it is a more useful feature when dealing with objects
+
+There is a union of Product and Person which id and name is in common so it can be used.
+dataItems.forEach(item => console.log(`ID: ${item.id}, Name: ${item.name}`));
+
+Understanding Union Property Types
+---------------------
+When a union of shape types is created, the types of each common property are combined, also using a
+union.
+
+This effect can be more easily understood by creating a type that is equivalent to the union
+
+type UnionType = {
+    id: number | string,
+    name: string
+};
+
+//Replacing with a Union Type
+let dataItems: UnionType[] = [hat, gloves, umbrella, bob];
+// let dataItems: (Product | Person)[] = [hat, gloves, umbrella, bob];
+
+The id property type is a number | string union because the id property in the Product type
+is a number, but the id property in the Person type is a string
+
+Using Type Guards for Objects
+---------------------
+
+the typeof keyword can be used to create type guards
+
+the typeof keyword cannot be used with objects because it will always return the
+same result
+
+dataItems.forEach(item => console.log(`ID: ${item.id}, Type: ${typeof item}`));
+
+>ID: 1, Type: object
+>ID: 2, Type: object
+>ID: 3, Type: object
+>ID: bsmith, Type: object
+
+the typeof keyword isn’t useful for determining whether an
+object conforms to the Product and Person shapes
+
+Type Guarding by Checking Properties
+---------------------
+
+The simplest way to differentiate between shape types is to use the JavaScript in keyword to check for a
+property
+
+The goal is to be able to determine each object in the array conforms to the Product 
+shape or the Person shape.
+
+We know these are the only types that the array can contain because its type 
+annotation is (Product | Person)[].
+
+A shape is a combination of properties
+a type guard must test for one or more properties that are
+included in one shape but not the other
+
+any object that has a city property must
+conform to the Person shape since this property is not part of the Product shape
+
+To create a type guard
+that checks for a property, the property name is expressed as a string literal, followed by the in keyword,
+followed by the object to test
+
+if ("city" in item) 
+    {
+        console.log(`Person: ${item.name}: ${item.city}`);
+    } 
+    else 
+    {
+        console.log(`Product: ${item.name}: ${item.price}`);
+    }
+
+The in expression returns true for objects that define the specified property and false otherwise.
+
+if ("id" in item && "name" in item)
+
+This test checks for id and name properties, but these are defined by both the Person and Product
+types, and the test doesn’t give the compiler enough information to infer a type.
+
+The type inferred in the if block is the Product | Person union, which means the use of the 
+city property will generate an error.
+
+The type inferred in the else block is never, since all the possible types have already been
+inferred, and the compiler will generate errors for the use of the name and price properties.
+
+if ("price" in item) 
+The test will match objects that define a price property, which means that the type inferred 
+in the if block will be Product
+
+
