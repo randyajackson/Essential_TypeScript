@@ -302,4 +302,355 @@ if ("price" in item)
 The test will match objects that define a price property, which means that the type inferred 
 in the if block will be Product
 
+Type Guarding with a Type Predicate Function
+--------------------------------------------
+
+The in keyword is a useful way to identify whether an object conforms to a shape, 
+but it requires the same checks to be written each time types need to be identified.
+
+function isPerson(testObj: any): testObj is Person {
+    return testObj.city !== undefined;
+    }
+
+dataItems.forEach(item => {
+    if (isPerson(item)) 
+    {........
+
+testObj is the Test Parameter
+is is the keyword
+Person is the Guard Type
+
+function isPerson(testObj : any): testObj is Person {}
+
+The result of the function, which is a type predicate, tells the compiler which of the function’s
+parameters is being tested and the type that the function checks for
+
+If testObj.city !== undefined;
+The object is a Person
+
+"is" functions are a flexible way to check for types
+
+Using Type Intersections
+--------------------------------------------
+
+Type intersections combine the features of multiple types, allowing all the features to be used.
+The type of the dataItems array is set to the intersection of the Person and Employee types.
+
+Intersection Type & Intersection Type
+let dataItems: (Person & Employee)[] = [bob];
+
+An object will conform to the shape of a type intersection only if it defines the properties defined by
+merging all the types in that intersection.
+
+Person:
+id
+name 
+city
+
+Employee:
+company
+dept
+
+Person & Employee:
+id
+name
+city
+company
+dept
+
+Using Intersections for Data Correlation
+--------------------------------------------
+
+Intersections are useful when you receive objects from one source and need to introduce new 
+functionality so they can be used elsewhere in the application
+or when objects from two data sources need to be
+correlated and combined
+
+type Person = {
+    id: string,
+    name: string,
+    city: string
+};
+
+type Employee = {
+    id: string,
+    company: string,
+    dept: string
+};
+
+type EmployedPerson = Person & Employee;
+
+correlateData function receives an array of Person objects and an array of
+Employee objects and uses the id property they share to produce objects that combine the properties of
+both shape types.
+
+let people: Person[] =
+            [{ id: "bsmith", name: "Bob Smith", city: "London" },
+            { id: "ajones", name: "Alice Jones", city: "Paris"},
+            { id: "dpeters", name: "Dora Peters", city: "New York"}];
+
+let employees: Employee[] =
+            [{ id: "bsmith", company: "Acme Co", dept: "Sales" },
+            { id: "dpeters", company: "Acme Co", dept: "Development" }];
+
+let dataItems3: EmployedPerson[] = correlateData(people, employees);
+
+function correlateData(peopleData: Person[], staff: Employee[]): EmployedPerson[] {
+    const defaults = { company: "None", dept: "None"};
+    return peopleData.map(p => ({ ...p,
+    ...staff.find(e => e.id === p.id) || { ...defaults, id: p.id } }));
+}
+
+Works as a way of joining the data.
+
+Understanding Intersection Merging
+-----------------------------------
+
+an intersection combines features from multiple types
+
+an object that conforms to the intersection
+shape also conforms to each of the types in the intersection
+
+an object that conforms to Person
+& Employee can be used where the Person type or the Employee type are specified
+
+function correlateData(peopleData: Person[], staff: Employee[]): EmployedPerson[] {
+    const defaults = { company: "None", dept: "None"};
+    return peopleData.map(p => ({ ...p,
+    ...staff.find(e => e.id === p.id) || { ...defaults, id: p.id } }));
+}
+
+let dataItems4: EmployedPerson[] = correlateData(people, employees);
+
+function writePerson(per: Person): void {
+console.log(`Person: ${per.id}, ${per.name}, ${per.city}`);
+}
+
+function writeEmployee(emp: Employee): void {
+console.log(`Employee: ${emp.id}, ${emp.company}, ${emp.dept}`);
+}
+
+dataItems4.forEach(item => {
+writePerson(item);
+writeEmployee(item);
+});
+
+The compiler matches an object to a shape by ensuring that it defines all the properties 
+in the shape and doesn’t care about excess properties
+
+The objects that conform to the EmployedPerson type can be used in the writePerson and
+writeEmployee functions because they conform to the types specified for the function’s 
+parameters
+
+Merging Properties with the Same Type
+-------------------------------------
+
+The simplest situation is where there are properties with the same name and the same type
+
+Person
+id: string
+
+Employee
+id: string
+
+Person & Employee
+id: string
+
+the id properties defined by the Person and Employee types, 
+which are merged into the intersection without any changes
+
+Merging Properties with Different Types
+-------------------------------------
+
+If there are properties with the same name but different types, the compiler keeps the property 
+name but intersects the type.
+
+This is an example of where removes the functions and adds a contact property to the
+Person and Employee types.
+
+type Person = {
+id: string,
+name: string,
+city: string,
+contact: number
+};
+
+type Employee = {
+id: string,
+company: string,
+dept: string,
+contact: string
+};
+
+type EmployedPerson = Person & Employee;
+
+let typeTest = ({} as EmployedPerson).contact;
+^a useful trick for seeing what type the compiler assigns to
+a property in the intersection by looking at the declaration file created in the dist folder 
+when the declaration compiler configuration option is true.
+
+The statement uses a type assertion to tell the compiler
+that an empty object conforms to the EmployedPeson type and assigns the contact property 
+to the typeTest variable.
+
+index.d.ts file in the dist folder will show the type for the 
+contact property in the intersection
+
+person: 
+id: string
+contact: number
+
+employee:
+id: string
+contact: string
+
+Person & Employee:
+id: string
+contact: number & string
+
+Creating an intersection of the types is the only way the compiler can merge the properties
+
+The intersection of number and string is an impossible type.
+
+the only solution is to adjust the types used in the intersection so that shape
+types are used instead of primitives
+
+Using Shape Types in an Intersection
+
+type Person = {
+id: string,
+name: string,
+city: string,
+contact: { phone: number }
+};
+
+type Employee = {
+id: string,
+company: string,
+dept: string,
+contact: { name: string }
+};
+
+type EmployedPerson = Person & Employee;
+let typeTest = ({} as EmployedPerson).contact;
+
+let person1: EmployedPerson = {
+id: "bsmith", name: "Bob Smith", city: "London",
+company: "Acme Co", dept: "Sales",
+contact: { name: "Alice" , phone: 6512346543 }
+};
+
+let person2: EmployedPerson = {
+id: "dpeters", name: "Dora Peters", city: "New York",
+company: "Acme Co", dept: "Development",
+contact: { name: "Alice" , phone: 6512346543 }
+};
+
+Now the intersection is handled as:
+
+person: 
+id: string
+contact: {phone: number}
+
+employee:
+id: string
+contact: {name: string}}
+
+Person & Employee:
+id: string
+contact: {phone: number} & {name: string}
+
+The intersection of an object with a phone property and an object with a name property is 
+an object with phone and name properties, which makes it possible to assign contact values 
+that conform to the Person and Employee types and their intersection.
+
+Merging Methods
+--------------
+
+If the types in an intersection define methods with the same name, then the compiler will 
+create a function whose signature is an intersection
+
+type Person = {
+id: string,
+name: string,
+city: string,
+getContact(field: string): string
+};
+
+type Employee = {
+id: string,
+company: string,
+dept: string
+getContact(field: number): number
+};
+
+type EmployedPerson = Person & Employee;
+
+let person: EmployedPerson = {
+
+    id: "bsmith", 
+    name: "Bob Smith", 
+    city: "London",
+    company: "Acme Co", 
+    dept: "Sales",
+    getContact(field: string | number): any 
+    {
+        return typeof field === "string" ? "Alice" : 6512346543;
+    }
+
+};
+
+let typeTest = person.getContact;
+let stringParamTypeTest = person.getContact("Alice");
+let numberParamTypeTest = person.getContact(123);
+console.log(`Contact: ${person.getContact("Alice")}`);
+console.log(`Contact: ${person.getContact(12)}`);
+
+person: 
+id: string
+getContact( field: string): string
+
+employee:
+id: string
+getContact( field: number): number
+
+Person & Employee:
+id: string
+getContact: (field: string) => string
+            & (field: number) => number
+
+It can be difficult to work out the consequences of merging methods in an intersection
+
+the overall effect is similar to type overloading
+
+rely on the type declaration file
+
+When the index.ts file is saved and compiled, the index.d.ts file in the dist folder will contain
+statements that show the type the compiler has assigned to each of the variables
+
+declare let typeTest: ((field: string) => string) & ((field: number) => number);
+declare let stringParamTypeTest: string;
+declare let numberParamTypeTest: number;
+
+type union to create a
+method that can receive string and number values
+
+Method results are more difficult to deal with because it
+can be hard to find a type that preserves compatibility
+
+the most reliable approach is to use any as the
+method result and use type guards to create the mappings between parameters and result types
+
+getContact(field: string | number): any {
+return typeof field === "string" ? "Alice" : 6512346543;
+}
+
+there is no other type that can be specified in this
+example that allows an EmployedPerson object to be used both as a Person and an Employee object
+
+
+
+
+
+
 
