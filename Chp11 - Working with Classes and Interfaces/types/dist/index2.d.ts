@@ -15,13 +15,12 @@ declare class Employee2 extends Person2 {
     writeDept(): void;
     getSpecificDetails(): string;
 }
-declare class Customer extends Person2 {
+declare class Customer {
     readonly id: string;
     name: string;
     city: string;
     creditLimit: number;
     constructor(id: string, name: string, city: string, creditLimit: number);
-    getSpecificDetails(): string;
 }
 declare class Supplier extends Person2 {
     readonly id: string;
@@ -32,4 +31,4 @@ declare class Supplier extends Person2 {
     getSpecificDetails(): string;
 }
 declare let salesEmployee2: Employee2;
-declare let data2: Person2[];
+declare let data2: (Person2 | Customer)[];

@@ -156,7 +156,20 @@ data2.forEach(item => {
 
 this eliminates the checking for diffent classes
 
-getDetails invokes getSpecificDetails() for the class that it belongs to
+getDetails invokes getSpecificDetails() for the class that it belongs to because of the abstract keyword
+
+Type Guarding an Abstract Class
+-------------------------------------
+
+Abstract classes are implemented as regular classes in the JavaScript generated
+by the compiler
+The TypeScript compiler prevents abstract classes from being instantiated and this is not carried
+over into the JavaScript code.
+The instanceof keyword can be used to narrow types.
+
+
+Using Interfaces
+-------------------------------------
 
 
 

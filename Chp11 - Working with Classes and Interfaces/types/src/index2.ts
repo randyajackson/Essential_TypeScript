@@ -82,15 +82,23 @@ class Employee2 extends Person2{
     }
 }
 
-class Customer extends Person2 {
+
+// class Customer extends Person2 {
+//     constructor(public readonly id: string, public name: string,
+//                 public city: string, public creditLimit: number){
+//                     super(id, name, city);
+//                 }
+    
+//     getSpecificDetails(){
+//         return `has ${this.creditLimit} limit`;
+//     }
+// }
+
+//type guarding customer that does not extend Person2
+class Customer{
     constructor(public readonly id: string, public name: string,
                 public city: string, public creditLimit: number){
-                    super(id, name, city);
                 }
-    
-    getSpecificDetails(){
-        return `has ${this.creditLimit} limit`;
-    }
 }
 
 class Supplier extends Person2 {
@@ -120,19 +128,30 @@ let salesEmployee2 = new Employee2("fvega", "Fidel Vega", "Sales", "Paris");
 
 //Using type inheritence to define data2
 
-let data2: Person2[] = [ //this explicitly sets the type
-//let data2 = [//new Person2("bsmith", "Bob Smith", "London"), //does not work if commented out
-//the TypeScript compiler has inferred the type for the data array based on the types of
-//objects it contains and has not reflected the shared superclass Person2
-//in index2.d.ts declare let data: (Employee | Customer)[];
-             new Employee2("fvega", "Fidel Vega", "Sales", "Paris"),
-             new Customer("ajones", "Alice Jones", "London", 500)];
+// let data2: Person2[] = [ //this explicitly sets the type
+// //let data2 = [//new Person2("bsmith", "Bob Smith", "London"), //does not work if commented out
+// //the TypeScript compiler has inferred the type for the data array based on the types of
+// //objects it contains and has not reflected the shared superclass Person2
+// //in index2.d.ts declare let data: (Employee | Customer)[];
+//              new Employee2("fvega", "Fidel Vega", "Sales", "Paris"),
+//              new Customer("ajones", "Alice Jones", "London", 500)];
+
+let data2: (Person2 | Customer)[] = [ //example of type guarding when class does not extend
+                 new Employee2("fvega", "Fidel Vega", "Sales", "Paris"),
+                 new Customer("ajones", "Alice Jones", "London", 500)];
 
 data2.push(new Supplier("dpeters", "Dora Peters", "New York", "Acme"));
 
 //forEach using type inheritence             
 data2.forEach(item => {
-    console.log(item.getDetails());
+    //type guarding when a mix of classes that don't extend
+    if(item instanceof Person2){
+        console.log(item.getDetails());
+    }
+    else{
+        console.log(`Customer: ${item.name}`);
+    }
+    
     // console.log(`Person: ${item.name}, ${item.city}`);
     // if(item instanceof Employee2){
     //     item.writeDept();
