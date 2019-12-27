@@ -1,2 +1,55 @@
 Working with Classes and Interfaces
 -------------------------------------
+
+TypeScript Compiler Options Used in This Chapter
+
+target 
+This option specifies the version of the JavaScript language that the compiler will target in
+its output.
+
+outDir 
+This option specifies the directory in which the JavaScript files will be placed.
+
+rootDir 
+This option specifies the root directory that the compiler will use to locate TypeScript files.
+
+declaration 
+This option produces type declaration files when enabled, which can be useful in
+understanding how types have been inferred. These files are described in more detail in
+Chapter 14.
+
+-------------------------------------
+Using Constructor Functions
+
+Objects can be created using constructor functions providing access to the prototype system
+
+Constructor functions can be handled in TypeScript but have a different syntax
+
+-------------------------------------
+Using Classes
+
+TypeScript doesn't have good support for constructor functions.
+This is because the focus has been on classes.
+
+index2.ts
+
+Using the Access Control Keywords
+-------------------------------------
+
+public 
+This keyword allows free access to a property or method and is the default if no keyword is used.
+
+private
+This keyword restricts access to the class that defines the property or method it is applied to.
+
+protected
+This keyword restricts access to the class that defines the property or method it is applied to
+and its subclasses.
+
+strictPropertyInitialization: True
+errors are reported if a class defines a property that is not assigned a value
+strictNullChecks must also be True in order for this to work
+
+Defining Read-Only Properties
+-------------------------------------
+
