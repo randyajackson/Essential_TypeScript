@@ -53,3 +53,123 @@ strictNullChecks must also be True in order for this to work
 Defining Read-Only Properties
 -------------------------------------
 
+readonly can be used to create instance properties whose value is assigned by the constructor
+but can otherwise not be changed
+
+Simplifying Class Constructors
+-------------------------------------
+
+Pure JavaScript classes use constructors that create instance properties dynamically
+TypeScript requires properties to be explicitly defined.
+
+class Employee2 {
+
+    constructor(public readonly id: string, public name: string, 
+                    private dept: string, public city: string){
+    }
+
+    writeDept(){
+        console.log(`${this.name} works in ${this.dept}`);
+    }
+}
+
+The compiler automatically created an instance property for each of the constructor arguments.
+You can add access control and the readonly keyword in the constructor argument.
+
+Using Class Inheritance
+-------------------------------------
+
+TypeScript builds on standard class inheritance features.
+
+class Person2{
+    
+    constructor(public id: string, public name: string, public city: string)
+    {};
+
+}
+
+class Employee2 extends Person2{
+    
+    constructor(public readonly id: string, public name: string,
+                private dept: string, public city: string)
+    {
+        super(id, name, city);
+    };
+    
+    writeDept(){
+         console.log(`${this.name} works in ${this.dept}`);
+     }
+}
+
+When using the xtends keyword, TypeScript requires that the superclass constructor is
+invoked using the super keyword.
+
+This ensures that its properties are initialized.
+
+Understanding Type Inference for Subclasses
+-------------------------------------
+Caution is required when letting the compiler infer types from classes because it is easy to produce
+unexpected results
+
+salesEmployee2 contains a Person2 object and an Employee2 object
+
+Looking at index2.d.ts, the type for data2 reads:
+declare let data2: Person2[];
+
+You assume that the compiler has realized that Employee2 is a subclass of Person2.
+Also that all the objects in the array can be treated as Person2 objects.
+
+In reality, the compiler creates a union of the types the array contains which would be
+Person2 | Employee2 and determines that this is equal to Person2
+
+The compiler pays attention to object shapes even if the developer is paying attention to classes.
+
+Consequences appear when using objects that share a common superclass.
+
+
+Using an Abstract Class
+-------------------------------------
+
+Abstract classes cannot be instantiated directly and are used to describe common functionality that must
+be implemented by subclasses, forcing subclasses to adhere to a specific shape but allowing class-specific
+implementations of specific methods
+
+use the abstract keyword before the class
+and add the abstract keyword before the methods defined without a body
+
+abstract class Person2{
+    ...
+getDetails(): string {
+        return `${this.name}, ${this.getSpecificDetails()}`;
+    }
+
+abstract getSpecificDetails(): string;
+    ...
+}
+
+When a class extends an abstract class, it must implement all the abstract methods.
+
+So in this instance, any class that extends Person2 must have a getSpecificDetails method.
+
+data2.forEach(item => {
+    console.log(item.getDetails());
+
+this eliminates the checking for diffent classes
+
+getDetails invokes getSpecificDetails() for the class that it belongs to
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
