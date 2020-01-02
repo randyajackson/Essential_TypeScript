@@ -14,17 +14,21 @@ let products = [new dataTypes_1.Product("Running Shoes", 100), new dataTypes_1.P
 //A generic type parameter is <T>
 //The result is a generic class, meaning a class that has at least one generic type parameter.
 //T can be used in place of a specific type.
+// class DataCollection<T>{
 class DataCollection {
     constructor(initialItems) {
+        //it restricts the range of types that can be used as the value for the generic type parameter
+        //Mostly to ensure that item.name will exist
         this.items = [];
         this.items.push(...initialItems);
     }
     add(newItem) {
         this.items.push(newItem);
     }
-    // getNames(): string[] {
-    //     return this.items.map(item => item.name);
-    // }
+    //restricting the generic type because only Person has names
+    getNames() {
+        return this.items.map(item => item.name);
+    }
     getItem(index) {
         return this.items[index];
     }
@@ -36,3 +40,8 @@ let firstPerson = peopleData.getItem(0);
 //     console.log(`First Person: ${firstPerson.name}, ${firstPerson.city}`);
 // }
 console.log(`First Person: ${firstPerson.name}, ${firstPerson.city}`);
+console.log(`Person Names: ${peopleData.getNames().join(", ")}`);
+let productData = new DataCollection(products);
+let firstProduct = productData.getItem(0);
+console.log(`First Product: ${firstProduct.name}, ${firstProduct.price}`);
+console.log(`Product Names: ${productData.getNames().join(", ")}`);

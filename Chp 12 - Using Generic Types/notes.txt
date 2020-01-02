@@ -38,6 +38,33 @@ Sometimes regular types become difficult to manage.
 
 Understanding Generic Type Arguments
 -------------------------------------
+A generic type parameter is resolved to a specific type using a generic type argument when an 
+instance of the DataCollection<T> class is created with the new keyword
+
+                     Class Name     Generic Type argument ( Person class )
+let peopleData = new DataCollection<Person>(people);
+
+now everything in
+class DataCollection<T>
+
+Will be using Person instead of T
+
+Using Different Type Arguments
+-------------------------------------
+The value of a generic type paramete affects only a single object
+A different type can be used for the generic type argument
+for EACH use of the new keyword
+
+Constraining Generic Type Values
+-------------------------------------
+
+class DataCollection<T extends (Person | Product)>
+
+extends (keyword)
+(Person | Product) (restriction Type)
+
+
+
 
 
 
