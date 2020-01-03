@@ -63,8 +63,18 @@ class DataCollection<T extends (Person | Product)>
 extends (keyword)
 (Person | Product) (restriction Type)
 
+the extends keyword constrains the types that can be assigned to the type parameter
 
+Constraining Generic Types Using a Shape
+---------------------------------------
 
+class DataCollection<T extends { name: string}> {
+DataCollection<T> class can be
+instantiated using any type that has a name property that returns a string.
 
+This allows City, Person, Product types to be used without requiring types to be specified.
+
+Defining Multiple Type Parameters
+---------------------------------------
 
 
