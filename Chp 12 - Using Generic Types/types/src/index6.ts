@@ -38,9 +38,17 @@ let employees = [ new Employee("Bob Smith", "Sales"), new Employee("Alice Jones"
     }
 
 let peopleData = new DataCollection<Person>(people);
+
+//The type parameter U is applied directly to the collate method, allowing a type to be provided 
+//when the method is invoked, like this:
+//As opposed to setting U for the whole class. ***
+//This requires the situation "when a type is used by only one method"
+
 // let collatedData = peopleData.collate(cities, "city", "name");
 let collatedData = peopleData.collate<City>(cities, "city", "name");
+
 collatedData.forEach(c => console.log(`${c.name}, ${c.city}, ${c.population}`));
+
 let empData = peopleData.collate<Employee>(employees, "name", "name");
 empData.forEach(c => console.log(`${c.name}, ${c.city}, ${c.role}`));
 

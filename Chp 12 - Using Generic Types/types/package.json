@@ -2,9 +2,9 @@
   "name": "types",
   "version": "1.0.0",
   "description": "",
-  "main": "index6.js",
+  "main": "index13.js",
   "scripts": {
-    "start": "tsc-watch --onsuccess \"node dist/index6.js\""
+    "start": "tsc-watch --onsuccess \"node dist/index13.js\""
   },
   "keywords": [],
   "author": "",

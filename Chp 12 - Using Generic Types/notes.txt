@@ -82,4 +82,34 @@ Applying a Type Parameter to a Method
 ---------------------------------------
 index6.ts
 
+Allowing the Compiler to Infer Type Arguments
+---------------------------------------
+index7.ts
+
+Extending Generic Classes
+---------------------------------------
+
+Adding Extra Features to the Existing Type Parameters
+--
+index8.ts
+
+Fixing the Generic Type Parameter
+--
+index9.ts
+
+Restricting the Generic Type Parameter
+--
+index10.ts
+
+Type Guarding Generic Types
+--
+index11.ts
+
+Defining a Static Method on a Generic Class
+--
+index12.ts
+
+Defining Generic Interfaces
+--
+index13.ts
 
