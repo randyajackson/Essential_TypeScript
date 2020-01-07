@@ -76,5 +76,10 @@ This allows City, Person, Product types to be used without requiring types to be
 
 Defining Multiple Type Parameters
 ---------------------------------------
+index5.ts
+
+Applying a Type Parameter to a Method
+---------------------------------------
+index6.ts
 
 
