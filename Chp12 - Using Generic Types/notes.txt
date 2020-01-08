@@ -1,0 +1,125 @@
+Using Generic Types
+
+Generic types are placeholders for types that are resolved when a class or function is used.
+
+This allows type-safe code to be written that can deal with a range of different types,
+such as collection classes.
+
+TypeScript Compiler Options Used in This Chapter
+------------------------------------------------
+
+declaration 
+This option produces type declaration files when enabled, which can be useful in
+understanding how types have been inferred. These files are described in more detail in
+Chapter 14.
+
+module
+This option specifies the module format, as described in Chapter 5.
+
+outDir
+This option specifies the directory in which the JavaScript files will be placed.
+
+rootDir
+This option specifies the root directory that the compiler will use to locate TypeScript files.
+
+target
+This option specifies the version of the JavaScript language that the compiler will target in
+its output.
+
+***
+To allow the import command, add to tsconfig.json:
+
+"module": "commonjs"
+
+Understanding How Generic Types Work
+-------------------------------------
+
+Sometimes regular types become difficult to manage.
+
+Understanding Generic Type Arguments
+-------------------------------------
+A generic type parameter is resolved to a specific type using a generic type argument when an 
+instance of the DataCollection<T> class is created with the new keyword
+
+                     Class Name     Generic Type argument ( Person class )
+let peopleData = new DataCollection<Person>(people);
+
+now everything in
+class DataCollection<T>
+
+Will be using Person instead of T
+
+Using Different Type Arguments
+-------------------------------------
+The value of a generic type paramete affects only a single object
+A different type can be used for the generic type argument
+for EACH use of the new keyword
+
+Constraining Generic Type Values
+-------------------------------------
+
+class DataCollection<T extends (Person | Product)>
+
+extends (keyword)
+(Person | Product) (restriction Type)
+
+the extends keyword constrains the types that can be assigned to the type parameter
+
+Constraining Generic Types Using a Shape
+---------------------------------------
+
+class DataCollection<T extends { name: string}> {
+DataCollection<T> class can be
+instantiated using any type that has a name property that returns a string.
+
+This allows City, Person, Product types to be used without requiring types to be specified.
+
+Defining Multiple Type Parameters
+---------------------------------------
+index5.ts
+
+Applying a Type Parameter to a Method
+---------------------------------------
+index6.ts
+
+Allowing the Compiler to Infer Type Arguments
+---------------------------------------
+index7.ts
+
+Extending Generic Classes
+---------------------------------------
+
+Adding Extra Features to the Existing Type Parameters
+--
+index8.ts
+
+Fixing the Generic Type Parameter
+--
+index9.ts
+
+Restricting the Generic Type Parameter
+--
+index10.ts
+
+Type Guarding Generic Types
+--
+index11.ts
+
+Defining a Static Method on a Generic Class
+--
+index12.ts
+
+Defining Generic Interfaces
+--
+index13.ts
+
+Extending Generic Interfaces
+--
+index14.ts
+
+Implementing a Generic Interface
+--
+index14.ts
+
+
+

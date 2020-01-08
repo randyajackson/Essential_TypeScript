@@ -1,0 +1,16 @@
+{
+  "name": "types",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index14.js",
+  "scripts": {
+    "start": "tsc-watch --onsuccess \"node dist/index14.js\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "tsc-watch": "^2.1.2",
+    "typescript": "^3.5.1"
+  }
+}
