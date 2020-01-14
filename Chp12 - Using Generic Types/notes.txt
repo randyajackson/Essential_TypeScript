@@ -121,5 +121,13 @@ Implementing a Generic Interface
 --
 index14.ts
 
+Restricting or Fixing the Generic Type Parameter
+--
+index15.ts
+
+Creating an Abstract Interface Implementation
+--
+index16.ts
+
 
 

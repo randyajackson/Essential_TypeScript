@@ -51,7 +51,28 @@ class ArrayCollection<DataType extends shapeType> implements Collection<DataType
 
 }
 
-let peopleCollection: Collection<Person> = new ArrayCollection<Person>();
+//Classes can provide an implementation of an interface that is specific to a type or a subset 
+//of the types supported by the interface
+
+//The PersonCollection class implements the Collection<Product> interface
+class PersonCollection implements Collection<Person> {
+    private items: Person[] = [];
+
+    add(...newItems: Person[]): void {
+        this.items.push(...newItems);
+    }
+
+    get(name: string): Person {
+        return this.items.find(item => item.name === name);
+    }
+
+    get count(): number {
+        return this.items.length;
+    }
+}
+
+let peopleCollection: Collection<Person> = new PersonCollection();
+// let peopleCollection: Collection<Person> = new ArrayCollection<Person>();
 
 peopleCollection.add(
     new Person("Bob Smith", "London"),
@@ -60,11 +81,7 @@ peopleCollection.add(
 
 console.log(`Collection size: ${peopleCollection.count}`);
 
-//The ArrayCollection<DataType> class uses the implements keyword to declare that it conforms 
-//to the interface.
 
-// The interface has a generic type parameter, so the ArrayCollection<DataType> class must define
-// a compatible parameter.
 
 
 
